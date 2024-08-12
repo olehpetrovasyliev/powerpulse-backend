@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs/promises");
 const path = require("path");
 const nanoid = require("nanoid");
 
@@ -13,23 +13,23 @@ const getAllExercises = async () => {
 };
 
 const getExerciseById = async (id) => {
-  const exercises = await getAll();
+  const exercises = await getAllExercises();
   const result = exercises.find((item) => item.id === id);
   return result || null;
 };
 
 const addNewExercise = async (data) => {
-  const exercises = await getAll();
+  const exercises = await getAllExercises();
   const newExercise = {
     ...data,
-    id: nanoid,
+    id: nanoid(),
   };
   exercises.push(newExercise);
   await updateExercises(exercises);
   return newExercise;
 };
 const updateExerciseById = async (id) => {
-  const exercises = await getAll();
+  const exercises = await getAllExercises();
   const index = exercises.findIndex((item) => item.id === id);
   if (index === -1) {
     return null;
@@ -43,7 +43,7 @@ const updateExerciseById = async (id) => {
 };
 
 const deleteExerciseById = async (id) => {
-  const exercises = await getAll();
+  const exercises = await getAllExercises();
   const index = exercises.findIndex((item) => item.id === id);
   if (index === -1) {
     return null;
