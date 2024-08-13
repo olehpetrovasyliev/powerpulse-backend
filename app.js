@@ -1,11 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
+require("dotenv").config();
 
 const exercisesRouter = require("./routes/api/exercises");
-const filters = require("./db/filters.json");
-const products = require("./db/products.json");
-const productsCategories = require("./db/productsCategories.json");
 
 const app = express();
 

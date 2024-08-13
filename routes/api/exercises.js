@@ -1,45 +1,21 @@
 const express = require("express");
 const exercisesService = require("../../models/exercises");
 const { httpError } = require("../../helpers");
+const { exercisesCtrl } = require("../../controllers");
+const {
+  addExerciseValidate,
+} = require("../../controllers/exercisesControllers");
+
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  try {
-    const result = await exercisesService.getAllExercises();
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+router.get("/", exercisesCtrl.getAll);
 
-router.get("/:id", async (req, res, next) => {
-  try {
-    const { id } = req.params;
+router.get("/:id", exercisesCtrl.getById);
 
-    const result = await exercisesService.getExerciseById(id);
+router.post("/", addExerciseValidate, exercisesCtrl.addNew);
 
-    if (!result) {
-      throw httpError(404, `exercise with id ${id} not found`);
-    }
+router.put("/:id", addExerciseValidate, exercisesCtrl.updateById);
 
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.post("/", (req, res, next) => {
-  try {
-    console.log(req);
-
-    res.json(req.body);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// router.put("/:id", (req, res, next) => {});
-
-// router.delete("/:id", (req, res, next) => {});
+router.delete("/:id", exercisesCtrl.deleteById);
 
 module.exports = router;
